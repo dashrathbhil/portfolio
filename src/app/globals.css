@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────
+   Design System — Color, Typography, Spacing Tokens
+   Inspired by Linear / Vercel / Retool / Supabase
+   ────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Background Scale (deep graphite → lighter) ── */
+  --bg-primary: #0a0c10;
+  --bg-secondary: #11141a;
+  --bg-tertiary: #181c25;
+  --bg-elevated: #1f2532;
+  --bg-surface: #262d3d;
+
+  /* ── Foreground / Text ── */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-muted: #475569;
+
+  /* ── Accent — Electric Blue ── */
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-subtle: rgba(59, 130, 246, 0.1);
+  --accent-border: rgba(59, 130, 246, 0.2);
+  --accent-glow: rgba(59, 130, 246, 0.05);
+
+  /* ── Borders ── */
+  --border-primary: rgba(255, 255, 255, 0.06);
+  --border-secondary: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(59, 130, 246, 0.3);
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.02);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-accent: 0 0 0 1px rgba(59, 130, 246, 0.2), 0 8px 32px rgba(59, 130, 246, 0.08);
+
+  /* ── Radii ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* ── Transitions ── */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Tailwind v4 Theme Extension ── */
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+
+  /* Expose custom colors to Tailwind utilities */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-surface: var(--bg-surface);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
+
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+  --color-border-hover: var(--border-hover);
+
+  /* Animation tokens */
+  --animate-fade-in: fade-in 0.6s var(--transition-base) forwards;
+  --animate-fade-in-up: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-fade-in-down: fade-in-down 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-scale-in: scale-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-slide-in-right: slide-in-right 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-pulse-subtle: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Keyframes
+   ────────────────────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Base Styles
+   ────────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Selection styling ── */
+::selection {
+  background-color: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Background Grid Pattern
+   ────────────────────────────────────────────────────────── */
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--border-secondary) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.bg-grid-sm {
+  background-image:
+    linear-gradient(to right, var(--border-secondary) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── Grid fade mask ── */
+.bg-grid-fade {
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Noise Texture Overlay
+   ────────────────────────────────────────────────────────── */
+
+.bg-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-noise {
+  position: relative;
+}
+
+.bg-noise > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Accent Gradient Glow (hero / section top)
+   ────────────────────────────────────────────────────────── */
+
+.accent-glow {
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(59, 130, 246, 0.04) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Utility — Stagger Animation Delay
+   ────────────────────────────────────────────────────────── */
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
