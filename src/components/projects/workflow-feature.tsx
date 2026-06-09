@@ -87,7 +87,7 @@ export function WorkflowFeature({
     >
       {/* Content Area */}
       <div
-        className={`lg:col-span-4 flex flex-col justify-start lg:pt-0 min-w-0 ${
+        className={`lg:col-span-4 flex flex-col justify-start lg:pt-0 min-w-0 order-2 ${
           reversed ? "lg:order-2 lg:pl-6" : "lg:order-1 lg:pr-6"
         }`}
       >
@@ -170,7 +170,7 @@ export function WorkflowFeature({
 
       {/* Visual Canvas */}
       <div
-        className={`lg:col-span-8 min-w-0 ${
+        className={`lg:col-span-8 min-w-0 order-1 ${
           reversed ? "lg:order-1" : "lg:order-2"
         }`}
       >

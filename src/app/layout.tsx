@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/navbar";
+import { BackToTop } from "@/components/ui/back-to-top";
 import "./globals.css";
 
 const inter = Inter({
@@ -66,6 +67,9 @@ export default function RootLayout({
 
         {/* Page content */}
         <main className="relative z-10 flex-1">{children}</main>
+
+        {/* Back to top */}
+        <BackToTop />
       </body>
     </html>
   );

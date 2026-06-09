@@ -14,6 +14,14 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+    setTimeout(() => {
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 300); // wait for menu close animation (0.25s)
+  };
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -54,7 +62,7 @@ export function Navbar() {
                 DB
               </span>
             </div>
-            <span className="hidden sm:block text-[14px] font-semibold text-text-primary tracking-tight transition-colors duration-300">
+            <span className="text-[14px] font-semibold text-text-primary tracking-tight transition-colors duration-300">
               Dashrath Bhil
             </span>
           </a>
@@ -146,7 +154,10 @@ export function Navbar() {
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(link.href);
+                    }}
                     className="text-[14px] font-semibold text-slate-300 hover:text-text-primary transition-colors py-1"
                     id={`nav-mobile-${link.label.toLowerCase()}`}
                   >

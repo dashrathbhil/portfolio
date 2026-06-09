@@ -254,7 +254,7 @@ export function HeroVisual() {
                 stiffness: 240,
                 damping: 26
               }}
-              className={`p-6 sm:p-8 rounded-3xl border transition-all duration-500 flex flex-col justify-between w-full max-w-[310px] sm:max-w-[420px] h-[390px] sm:h-[430px] bg-gradient-to-br ${activeProduct.color} ${activeProduct.borderColor} ${activeProduct.glow}`}
+              className={`p-6 sm:p-8 rounded-3xl border transition-all duration-500 flex flex-col justify-between w-full max-w-full sm:max-w-[420px] h-[410px] sm:h-[430px] bg-gradient-to-br ${activeProduct.color} ${activeProduct.borderColor} ${activeProduct.glow}`}
             >
               <AnimatePresence mode="wait">
                 <motion.div
