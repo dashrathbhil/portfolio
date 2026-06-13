@@ -401,7 +401,7 @@ export function ContactSection() {
                   <a href="https://linkedin.com/in/dashrathbhil" target="_blank" rel="noopener noreferrer" className="text-[13px] text-slate-400 hover:text-white transition-colors">
                     LinkedIn
                   </a>
-                  <a href="/Dashrath_Bhil_Resume.pdf" target="_blank" rel="noopener noreferrer" download="Dashrath_Bhil_Resume.pdf" className="text-[13px] text-slate-400 hover:text-white transition-colors flex items-center gap-1">
+                  <a href="/Dashrath_Bhil_Backend_Software_Engineer_Resume.pdf" target="_blank" rel="noopener noreferrer" download="Dashrath_Bhil_Backend_Software_Engineer_Resume.pdf" className="text-[13px] text-slate-400 hover:text-white transition-colors flex items-center gap-1">
                     Resume ↗
                   </a>
                 </div>

@@ -53,10 +53,10 @@ export function HeroSection() {
                 variant="secondary"
                 size="lg"
                 id="hero-cta-resume"
-                href="/Dashrath_Bhil_Resume.pdf"
+                href="/Dashrath_Bhil_Backend_Software_Engineer_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                download="Dashrath_Bhil_Resume.pdf"
+                download="Dashrath_Bhil_Backend_Software_Engineer_Resume.pdf"
               >
                 View Resume
                 <svg
