@@ -6,11 +6,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 const products = [
   {
     id: "amsl",
-    title: "AMSL",
-    subtitle: "Utility Brokerage Platform",
-    desc: "Energy contract pricing, broker management, and utility procurement.",
-    capabilities: ["Contract Pricing", "Utility Quotes", "Commission Engine", "Broker Management"],
-    workflow: ["Quote", "Contract", "Commission"],
+    title: "AMSL Broker Portal",
+    subtitle: "Enterprise SaaS for UK Energy Brokers",
+    highlights: [
+      "Rule-Based Quote Engine",
+      "Multi-Tenant SaaS",
+      "OCR Invoice Processing",
+      "Commission Distribution",
+      "Market Benchmark Analytics"
+    ],
+    metrics: ["15+ Modules", "300+ APIs", "20+ Suppliers"],
+    workflow: ["Quote", "Contract", "Settlement"],
     color: "from-blue-600/20 via-blue-500/5 to-bg-elevated/95",
     glow: "shadow-[0_0_40px_rgba(59,130,246,0.22)]",
     borderColor: "border-blue-500/35",
@@ -27,11 +33,17 @@ const products = [
   },
   {
     id: "auc",
-    title: "AUC",
-    subtitle: "Debt Recovery CRM",
-    desc: "Postcode-based assignments, site visit forms, and recovery tracking.",
-    capabilities: ["Assignment", "Site Visits", "Payment Tracking", "Recovery Workflow"],
-    workflow: ["Case Assignment", "Site Visit", "Recovery Outcome"],
+    title: "AUC Collections CRM",
+    subtitle: "Production System for Debt Recovery Agencies",
+    highlights: [
+      "Postcode Assignment Engine",
+      "Field Agent Workflow Automation",
+      "Automated PDF Letter Generation",
+      "Real-Time Payment Tracking Ledger",
+      "Granular Role-Based Permissions"
+    ],
+    metrics: ["10+ Orgs Active", "Real-Time Sync"],
+    workflow: ["Assignment", "Field Visit", "Recovery"],
     color: "from-rose-600/20 via-rose-500/5 to-bg-elevated/95",
     glow: "shadow-[0_0_40px_rgba(244,63,94,0.22)]",
     borderColor: "border-rose-500/35",
@@ -48,11 +60,17 @@ const products = [
   },
   {
     id: "trk",
-    title: "TRK",
-    subtitle: "Loan Management System",
-    desc: "Onboarding flow, business loan tracking, and investor matching.",
-    capabilities: ["Customer Onboarding", "Loan Processing", "EMI Tracking", "Investor Allocation"],
-    workflow: ["Application", "Approval", "EMI", "Returns"],
+    title: "TRK Merchant Lending",
+    subtitle: "Lending SaaS & Capital Allocation Platform",
+    highlights: [
+      "Automated Underwriting Flow",
+      "EMI Interest Calculations Engine",
+      "Investor Allocation Algorithm",
+      "KYC Document Verification Integration",
+      "Bank Statement PDF Parsing"
+    ],
+    metrics: ["£12M+ Volume", "Audit-Ready Logs"],
+    workflow: ["Application", "Approval", "Repayment"],
     color: "from-emerald-600/20 via-emerald-500/5 to-bg-elevated/95",
     glow: "shadow-[0_0_40px_rgba(16,185,129,0.22)]",
     borderColor: "border-emerald-500/35",
@@ -69,11 +87,17 @@ const products = [
   },
   {
     id: "accounting",
-    title: "Accounting",
-    subtitle: "Financial Operations",
-    desc: "Double-entry bookkeeping, purchase orders, and supplier reconciliation.",
-    capabilities: ["Inventory", "Purchasing", "Invoices", "Reconciliation"],
-    workflow: ["Purchase Order", "Invoice", "Payment", "Ledger"],
+    title: "Accounting Ledger",
+    subtitle: "Financial Operations & Double-Entry Ledger",
+    highlights: [
+      "Double-Entry General Ledger",
+      "Purchase Order Reconciliation Engine",
+      "Supplier Statement PDF Parser",
+      "Auditable Transactions Journal",
+      "Multi-Currency FX Pipeline"
+    ],
+    metrics: ["100% Tax Compliant", "Instant Reconciliation"],
+    workflow: ["PO Raised", "Invoice Match", "Ledger Post"],
     color: "from-amber-600/20 via-amber-500/5 to-bg-elevated/95",
     glow: "shadow-[0_0_40px_rgba(245,158,11,0.22)]",
     borderColor: "border-amber-500/35",
@@ -110,41 +134,35 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.15
+      staggerChildren: 0.08,
+      delayChildren: 0.1
     }
   }
 };
 
 const chipVariants = {
-  hidden: { opacity: 0, scale: 0.85, y: 6 },
+  hidden: { opacity: 0, scale: 0.9, y: 4 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
     transition: {
       type: "spring" as const,
-      stiffness: 280,
-      damping: 18
+      stiffness: 300,
+      damping: 20
     }
   }
 };
 
-export function HeroVisual() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+interface HeroVisualProps {
+  activeIndex: number;
+  setActiveIndex: (index: number) => void;
+}
+
+export function HeroVisual({ activeIndex, setActiveIndex }: HeroVisualProps) {
   const [workflowStep, setWorkflowStep] = useState(0);
 
   const activeProduct = products[activeIndex];
-
-  // Handle active product auto-rotation
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % products.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [isPaused]);
 
   // Handle workflow timeline progression inside active card
   useEffect(() => {
@@ -164,20 +182,17 @@ export function HeroVisual() {
     return () => clearInterval(interval);
   }, [activeIndex, activeProduct.workflow.length]);
 
-  const handleMouseLeave = () => {
-    setIsPaused(false);
-  };
-
-  // Calculate percentage dynamically based on step index
-  const progressPercent = activeProduct.workflow.length > 1
-    ? (workflowStep / (activeProduct.workflow.length - 1)) * 100
-    : 100;
+  const targetProjectHref = activeIndex === 0
+    ? "#project-amsl"
+    : activeIndex === 1
+    ? "#project-auc"
+    : activeIndex === 2
+    ? "#project-trk"
+    : "#project-account";
 
   return (
     <div 
       className="relative w-full flex flex-col items-center justify-center p-2 font-sans overflow-visible select-none"
-      onMouseLeave={handleMouseLeave}
-      onMouseEnter={() => setIsPaused(true)}
     >
       {/* CSS Hardware-Accelerated floating keyframes for butter-smooth animation */}
       <style dangerouslySetInnerHTML={{__html: `
@@ -235,18 +250,19 @@ export function HeroVisual() {
       ))}
 
       {/* Card Content Wrap */}
-      <div className="relative w-full flex-1 flex flex-col items-center justify-center gap-7 sm:gap-9 z-10 py-6">
+      <div className="relative w-full flex-1 flex flex-col items-center justify-center gap-5 sm:gap-6 z-10 py-2">
         
-        {/* Hover scale + float wrapper */}
-        <motion.div
-          whileHover={{ scale: 1.025 }}
-          transition={{ type: "spring", stiffness: 180, damping: 22 }}
-          className="w-full flex justify-center items-center"
+        {/* Hover scale + float wrapper & Link to Project Deep Dive */}
+        <a 
+          href={targetProjectHref}
+          className="w-full flex justify-center items-center cursor-pointer group/card block"
         >
-          {/* Subtle GPU Compositor Floating Movement */}
-          <div className="w-full flex justify-center animate-compositor-float">
-            
-            {/* The Active Platform Card - Stable Height (h-[390px] sm:h-[430px]) keeps indicators completely static */}
+          <motion.div
+            whileHover={{ scale: 1.025 }}
+            transition={{ type: "spring", stiffness: 180, damping: 22 }}
+            className="w-full flex justify-center animate-compositor-float"
+          >
+            {/* The Active Platform Card */}
             <motion.div
               layout
               transition={{
@@ -254,7 +270,7 @@ export function HeroVisual() {
                 stiffness: 240,
                 damping: 26
               }}
-              className={`p-6 sm:p-8 rounded-3xl border transition-all duration-500 flex flex-col justify-between w-full max-w-full sm:max-w-[420px] h-[410px] sm:h-[430px] bg-gradient-to-br ${activeProduct.color} ${activeProduct.borderColor} ${activeProduct.glow}`}
+              className={`p-6 sm:p-7 rounded-2xl border transition-all duration-500 flex flex-col justify-between w-full max-w-full sm:max-w-[480px] h-[400px] sm:h-[425px] bg-gradient-to-br ${activeProduct.color} ${activeProduct.borderColor} ${activeProduct.glow} hover:border-white/10`}
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -268,51 +284,54 @@ export function HeroVisual() {
                   <div>
                     {/* Card Header */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className="p-2.5 rounded-xl border bg-bg-primary border-border-secondary shadow-md">
+                      <div className="p-2.5 rounded-lg border bg-bg-primary border-border-secondary shadow-md">
                         <span className={activeProduct.accentColor}>
                           {activeProduct.icon}
                         </span>
                       </div>
-                      <span className={`text-[10.5px] font-mono font-bold uppercase tracking-wider ${activeProduct.accentColor}`}>
-                        {activeProduct.id.toUpperCase()}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        {activeProduct.metrics.map((metric) => (
+                          <span 
+                            key={metric}
+                            className={`text-[9.5px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${activeProduct.badgeColor}`}
+                          >
+                            {metric}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Title and Subtitle */}
-                    <h3 className="text-[16px] sm:text-[18px] font-bold text-text-primary tracking-tight">
+                    <h3 className="text-[18px] sm:text-[20px] font-bold text-text-primary tracking-tight group-hover/card:text-blue-400 transition-colors duration-200">
                       {activeProduct.title}
                     </h3>
                     <p className={`text-[11.5px] sm:text-[12.5px] font-semibold uppercase tracking-wider mt-0.5 ${activeProduct.accentColor}`}>
                       {activeProduct.subtitle}
                     </p>
 
-                    {/* Description */}
-                    <p className="mt-3.5 text-[12.5px] sm:text-[13.5px] text-text-secondary leading-normal font-normal">
-                      {activeProduct.desc}
-                    </p>
-                  </div>
-
-                  <div>
-                    {/* Capability Chips (Sequential Animation) */}
+                    {/* Highlights List */}
                     <motion.div
                       variants={containerVariants}
                       initial="hidden"
                       animate="visible"
-                      className="flex flex-wrap gap-2 mt-4.5 pt-4.5 border-t border-border-secondary/20"
+                      className="flex flex-col gap-2 mt-4 pt-4 border-t border-border-secondary/20"
                     >
-                      {activeProduct.capabilities.map((cap) => (
-                        <motion.span 
-                          key={cap}
+                      {activeProduct.highlights.map((highlight) => (
+                        <motion.div 
+                          key={highlight}
                           variants={chipVariants}
-                          className={`text-[9.5px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full border ${activeProduct.badgeColor}`}
+                          className="flex items-center gap-2.5 text-[12.5px] sm:text-[13.5px] text-text-secondary font-medium"
                         >
-                          {cap}
-                        </motion.span>
+                          <span className={`w-1.5 h-1.5 rounded-full bg-current ${activeProduct.accentColor} opacity-80`} />
+                          <span>{highlight}</span>
+                        </motion.div>
                       ))}
                     </motion.div>
+                  </div>
 
+                  <div>
                     {/* Precise Inline Workflow Timeline */}
-                    <div className="relative flex items-center justify-between w-full mt-6 mb-7 p-4 bg-bg-primary/60 border border-border-secondary/35 rounded-xl px-5 shadow-inner">
+                    <div className="relative flex items-center justify-between w-full mt-4 p-3.5 bg-bg-primary/60 border border-border-secondary/35 rounded-xl px-4.5 shadow-inner">
                       {activeProduct.workflow.map((step, idx) => {
                         const isCompleted = idx < workflowStep;
                         const isActiveStep = idx === workflowStep;
@@ -365,7 +384,7 @@ export function HeroVisual() {
 
                             {/* Connector Line: renders ONLY between adjacent node elements in flow */}
                             {idx < activeProduct.workflow.length - 1 && (
-                              <div className="flex-1 h-[2px] bg-border-secondary/25 relative mx-2 rounded-full overflow-hidden z-0">
+                              <div className="flex-1 h-[2px] bg-border-secondary/25 relative mx-1.5 rounded-full overflow-hidden z-0">
                                 <motion.div
                                   className="h-full rounded-full"
                                   style={{ backgroundColor: activeProduct.accentHex }}
@@ -389,8 +408,8 @@ export function HeroVisual() {
                 </motion.div>
               </AnimatePresence>
             </motion.div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </a>
 
         {/* Platform Selector Indicators */}
         <div className="flex items-center gap-1.5 p-1 bg-bg-elevated/45 border border-border-secondary/35 rounded-xl backdrop-blur-md relative z-10">

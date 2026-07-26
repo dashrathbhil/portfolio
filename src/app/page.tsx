@@ -1,16 +1,19 @@
 import { HeroSection } from "@/components/hero-section";
-import { ProjectsSection } from "@/components/projects";
-import { AboutSection, EngineeringApproachSection, ContactSection, Footer } from "@/components/about-contact";
+import { EngineeringExpertiseSection } from "@/components/expertise";
+import { FeaturedProjectsSection } from "@/components/featured-projects";
+import { EngineeringPhilosophySection, ProfessionalExperienceSection, ContactSection, Footer } from "@/components/about-contact";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
-      <ProjectsSection />
-      <EngineeringApproachSection />
-      <AboutSection />
+      <EngineeringExpertiseSection />
+      <FeaturedProjectsSection />
+      <EngineeringPhilosophySection />
+      <ProfessionalExperienceSection />
       <ContactSection />
       <Footer />
     </>
   );
 }
+

@@ -4,27 +4,62 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Projects", href: "#projects" },
-  { label: "Architecture", href: "#architecture" },
-  { label: "About", href: "#about" },
+  { label: "Home", href: "#home" },
+  { label: "Projects", href: "#featured-projects" },
+  { label: "Experience", href: "#philosophy" },
   { label: "Contact", href: "#contact" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
     setTimeout(() => {
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 300); // wait for menu close animation (0.25s)
+      if (href === "#home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      const el = document.querySelector(href) as HTMLElement;
+      if (el) {
+        // Offset for the navbar height (approx 64px)
+        const y = el.getBoundingClientRect().top + window.scrollY - 64;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 150); // wait for menu to start closing
   };
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      // Active section detection
+      const sections = navLinks.map(link => link.href.substring(1));
+      
+      let current = "home";
+      // Trigger point slightly below the navbar to feel natural
+      const triggerPoint = window.scrollY + window.innerHeight / 3;
+
+      for (const section of sections) {
+        if (section === "home") continue;
+        const el = document.getElementById(section);
+        if (el && el.offsetTop <= triggerPoint) {
+          current = section;
+        }
+      }
+      
+      // If at absolute bottom of page, highlight contact
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+        current = "contact";
+      }
+
+      setActiveSection(current);
+    };
+    
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -42,50 +77,67 @@ export function Navbar() {
   return (
     <header
       id="site-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled || isOpen
-          ? "bg-bg-primary/95 backdrop-blur-md border-border-primary/60 shadow-sm"
-          : "bg-transparent border-transparent"
+          ? "bg-[#050810]/70 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-12 xl:px-16">
         <nav className="flex items-center justify-between h-14 sm:h-16" id="main-nav">
 
           {/* ── Left: Identity ── */}
           <a
             href="/"
-            className="flex items-center gap-3 group shrink-0"
-            id="nav-logo"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick("#home");
+            }}
+            className="flex items-center gap-3 group shrink-0 outline-none rounded-md focus-visible:ring-2 focus-visible:ring-blue-500/50"
+            aria-label="Home"
           >
-            <div className="w-8 h-8 rounded-md bg-text-primary flex items-center justify-center transition-all duration-300 shadow-sm">
-              <span className="text-bg-primary font-bold text-[11px] leading-none tracking-wide">
+            <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+              <span className="text-black font-bold text-[11px] leading-none tracking-wide">
                 DB
               </span>
             </div>
-            <span className="text-[14px] font-semibold text-text-primary tracking-tight transition-colors duration-300">
+            <span className="text-[14px] font-semibold text-slate-200 tracking-tight transition-colors duration-300 group-hover:text-white">
               Dashrath Bhil
             </span>
           </a>
 
           {/* ── Center: Navigation Links — Desktop only ── */}
-          <div className="hidden md:flex items-center gap-0.5 sm:gap-1 absolute left-1/2 -translate-x-1/2">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                id={`nav-${link.label.toLowerCase()}`}
-                className="px-2.5 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium text-slate-300 hover:text-text-primary transition-all duration-300 rounded-md hover:bg-bg-secondary/50"
-              >
-                {link.label}
-              </a>
-            ))}
+          <div className="hidden md:flex items-center gap-1 sm:gap-2 absolute left-1/2 -translate-x-1/2">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.substring(1);
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(link.href);
+                  }}
+                  className={`relative px-3 sm:px-4 py-2 text-[13px] font-medium transition-all duration-300 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 hover:bg-white/[0.03] ${
+                    isActive 
+                      ? "text-blue-400" 
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)] rounded-full" />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
           {/* ── Right: Socials — Desktop only ── */}
           <div className="hidden md:flex items-center gap-1 shrink-0">
             <a
               href="mailto:dashrathbhil.in@gmail.com"
-              className="p-2 text-slate-300 hover:text-text-primary transition-colors duration-200 rounded-md hover:bg-white/[0.04]"
+              className="p-2 text-slate-400 hover:text-white transition-colors duration-200 rounded-md hover:bg-white/[0.05] outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
               aria-label="Email"
             >
               <svg className="w-[17px] h-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -96,7 +148,7 @@ export function Navbar() {
               href="https://github.com/dashrathbhil"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-slate-300 hover:text-text-primary transition-colors duration-200 rounded-md hover:bg-white/[0.04]"
+              className="p-2 text-slate-400 hover:text-white transition-colors duration-200 rounded-md hover:bg-white/[0.05] outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
               aria-label="GitHub"
             >
               <svg className="w-[17px] h-[17px]" fill="currentColor" viewBox="0 0 24 24">
@@ -107,7 +159,7 @@ export function Navbar() {
               href="https://linkedin.com/in/dashrathbhil"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-slate-300 hover:text-text-primary transition-colors duration-200 rounded-md hover:bg-white/[0.04]"
+              className="p-2 text-slate-400 hover:text-white transition-colors duration-200 rounded-md hover:bg-white/[0.05] outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
               aria-label="LinkedIn"
             >
               <svg className="w-[17px] h-[17px]" fill="currentColor" viewBox="0 0 24 24">
@@ -120,9 +172,8 @@ export function Navbar() {
           <div className="flex md:hidden items-center shrink-0">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 -mr-2 text-slate-300 hover:text-text-primary transition-colors focus:outline-none"
+              className="p-2 -mr-2 text-slate-300 hover:text-white transition-colors focus:outline-none rounded-md focus-visible:ring-2 focus-visible:ring-blue-500/50"
               aria-label="Toggle menu"
-              id="mobile-menu-toggle"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.25">
                 {isOpen ? (
@@ -145,34 +196,40 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden border-t border-border-primary/30 bg-bg-primary/95 backdrop-blur-lg overflow-hidden"
+            className="md:hidden border-t border-white/[0.05] bg-[#050810]/95 backdrop-blur-xl overflow-hidden"
           >
             <div className="px-6 py-6 flex flex-col gap-6">
               {/* Navigation Links */}
-              <div className="flex flex-col gap-4">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNavClick(link.href);
-                    }}
-                    className="text-[14px] font-semibold text-slate-300 hover:text-text-primary transition-colors py-1"
-                    id={`nav-mobile-${link.label.toLowerCase()}`}
-                  >
-                    {link.label}
-                  </a>
-                ))}
+              <div className="flex flex-col gap-3">
+                {navLinks.map((link) => {
+                  const isActive = activeSection === link.href.substring(1);
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavClick(link.href);
+                      }}
+                      className={`relative px-4 py-3 text-[14.5px] font-semibold transition-all duration-300 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${
+                        isActive
+                          ? "text-blue-400 bg-blue-500/10"
+                          : "text-slate-300 hover:text-white hover:bg-white/[0.03]"
+                      }`}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                })}
               </div>
               
               {/* Socials Link Row */}
-              <div className="border-t border-border-primary/20 pt-4.5 flex items-center justify-between">
-                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Connect</span>
+              <div className="border-t border-white/[0.05] pt-5 flex items-center justify-between">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Connect</span>
                 <div className="flex items-center gap-3">
                   <a
                     href="mailto:dashrathbhil.in@gmail.com"
-                    className="p-1.5 text-slate-300 hover:text-text-primary transition-colors"
+                    className="p-2 bg-white/[0.03] rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors"
                     aria-label="Email"
                   >
                     <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -183,7 +240,7 @@ export function Navbar() {
                     href="https://github.com/dashrathbhil"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1.5 text-slate-300 hover:text-text-primary transition-colors"
+                    className="p-2 bg-white/[0.03] rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors"
                     aria-label="GitHub"
                   >
                     <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
@@ -194,7 +251,7 @@ export function Navbar() {
                     href="https://linkedin.com/in/dashrathbhil"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1.5 text-slate-300 hover:text-text-primary transition-colors"
+                    className="p-2 bg-white/[0.03] rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors"
                     aria-label="LinkedIn"
                   >
                     <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
