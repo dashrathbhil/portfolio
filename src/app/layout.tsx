@@ -50,9 +50,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased overflow-x-hidden`}
+      className={`${inter.variable} ${geistMono.variable} h-full antialiased overflow-x-clip`}
     >
-      <body className="min-h-full flex flex-col bg-bg-primary text-text-primary font-sans overflow-x-hidden w-full max-w-[100vw]">
+      <body className="min-h-full flex flex-col bg-bg-primary text-text-primary font-sans overflow-x-clip w-full max-w-[100vw]">
         {/* Background grid — spans full page */}
         <div className="fixed inset-0 bg-grid bg-grid-fade pointer-events-none z-0" />
 

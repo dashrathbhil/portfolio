@@ -126,7 +126,7 @@ const featuredProjects = [
     positioning: "Enterprise SaaS for UK Energy Brokers",
     description: "A multi-tenant SaaS platform connecting suppliers, agencies, brokers, customers, quotations, contracts, commissions, and operational workflows.",
     domains: ["Enterprise SaaS", "Utilities", "B2B Automation"],
-    link: "#project-amsl",
+    link: "/amsl",
     Illustration: AmslWorkflow
   },
   {
